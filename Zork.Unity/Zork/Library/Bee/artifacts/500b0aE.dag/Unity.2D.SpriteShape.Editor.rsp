@@ -107,6 +107,7 @@
 -define:ENABLE_LEGACY_INPUT_MANAGER
 -define:CSHARP_7_OR_LATER
 -define:CSHARP_7_3_OR_NEWER
+-r:"Assets/netstandard2.0/Zork.Common.dll"
 -r:"C:/Users/Jess/Desktop/Unity/2021.1.13f1/Editor/Data/Managed/UnityEditor.Graphs.dll"
 -r:"C:/Users/Jess/Desktop/Unity/2021.1.13f1/Editor/Data/Managed/UnityEngine/UnityEditor.CoreModule.dll"
 -r:"C:/Users/Jess/Desktop/Unity/2021.1.13f1/Editor/Data/Managed/UnityEngine/UnityEditor.DeviceSimulatorModule.dll"
@@ -303,11 +304,11 @@
 -r:"C:/Users/Jess/Desktop/Unity/2021.1.13f1/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/System.Xml.Linq.dll"
 -r:"C:/Users/Jess/Desktop/Unity/2021.1.13f1/Editor/Data/PlaybackEngines/AndroidPlayer/UnityEditor.Android.Extensions.dll"
 -r:"C:/Users/Jess/Desktop/Unity/2021.1.13f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll"
--r:"D:/Repositories/Zork/Zork/Library/PackageCache/com.unity.collab-proxy@1.5.7/Lib/Editor/PlasticSCM/log4netPlastic.dll"
--r:"D:/Repositories/Zork/Zork/Library/PackageCache/com.unity.collab-proxy@1.5.7/Lib/Editor/PlasticSCM/Unity.Plastic.Antlr3.Runtime.dll"
--r:"D:/Repositories/Zork/Zork/Library/PackageCache/com.unity.collab-proxy@1.5.7/Lib/Editor/PlasticSCM/unityplastic.dll"
--r:"D:/Repositories/Zork/Zork/Library/PackageCache/com.unity.ext.nunit@1.0.6/net35/unity-custom/nunit.framework.dll"
--r:"D:/Repositories/Zork/Zork/Library/PackageCache/com.unity.nuget.newtonsoft-json@2.0.2/Runtime/Newtonsoft.Json.dll"
+-r:"C:/Users/Jess/Desktop/ZorkUnity/Zork.Unity/Zork/Library/PackageCache/com.unity.collab-proxy@1.5.7/Lib/Editor/PlasticSCM/log4netPlastic.dll"
+-r:"C:/Users/Jess/Desktop/ZorkUnity/Zork.Unity/Zork/Library/PackageCache/com.unity.collab-proxy@1.5.7/Lib/Editor/PlasticSCM/Unity.Plastic.Antlr3.Runtime.dll"
+-r:"C:/Users/Jess/Desktop/ZorkUnity/Zork.Unity/Zork/Library/PackageCache/com.unity.collab-proxy@1.5.7/Lib/Editor/PlasticSCM/unityplastic.dll"
+-r:"C:/Users/Jess/Desktop/ZorkUnity/Zork.Unity/Zork/Library/PackageCache/com.unity.ext.nunit@1.0.6/net35/unity-custom/nunit.framework.dll"
+-r:"C:/Users/Jess/Desktop/ZorkUnity/Zork.Unity/Zork/Library/PackageCache/com.unity.nuget.newtonsoft-json@2.0.2/Runtime/Newtonsoft.Json.dll"
 -r:"Library/Bee/artifacts/500b0aE.dag/Unity.2D.Common.Editor.ref.dll"
 -r:"Library/Bee/artifacts/500b0aE.dag/Unity.2D.Common.Runtime.ref.dll"
 -r:"Library/Bee/artifacts/500b0aE.dag/Unity.2D.Path.Editor.ref.dll"
