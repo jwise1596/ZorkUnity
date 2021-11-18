@@ -1,7 +1,8 @@
+using System;
 using UnityEngine;
 using Zork.Common;
 using TMPro;
-using System;
+
 
 public class UnityInputService : MonoBehaviour, IInputService
 {
@@ -13,9 +14,9 @@ public class UnityInputService : MonoBehaviour, IInputService
     {
         if (Input.GetKey(KeyCode.Return))
         {
-            string inputString = InputField.text;
-            if (string.IsNullOrWhiteSpace(inputString) == false)
+            if (string.IsNullOrWhiteSpace(InputField.text) == false)
             {
+                string inputString = InputField.text.Trim().ToUpper();
                 InputReceived?.Invoke(this, inputString);
             }
 

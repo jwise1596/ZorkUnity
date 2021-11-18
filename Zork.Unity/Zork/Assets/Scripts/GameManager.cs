@@ -1,28 +1,38 @@
-using UnityEngine;
 using Zork;
+using UnityEngine;
+using Newtonsoft.Json;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
-    void Awake()
-    {
-        TextAsset gameJsonAsset = Resources.Load<TextAsset>(ZorkGameFileAssetName);
-        Game.Load(gameJsonAsset.text, OutputService, InputService);
-    }
-    void Start()
-    {
-        
-    }
-
-    void Update()
-    {
-
-        
-    }
-
     [SerializeField]
     private string ZorkGameFileAssetName = "Zork";
-    [SerializeField]
-    private UnityOutputService OutputService;
+
     [SerializeField]
     private UnityInputService InputService;
+
+    [SerializeField]
+    private UnityOutputService OutputService;
+
+    [SerializeField]
+    private TextMeshProUGUI CurrentLocationText;
+
+    [SerializeField]
+    private TextMeshProUGUI ScoreText;
+
+    [SerializeField]
+    private TextMeshProUGUI MovesText;
+
+    void Start()
+    {
+        TextAsset gameTextAsset = Resources.Load<TextAsset>("Zork");
+        _game = JsonConvert.DeserializeObject<Game>(gameTextAsset.text);
+        _game.Player.LocationChanged += (sender, location) => CurrentLocationText.text = location.ToString();
+        _game.Player.MovesChanged += (sender, moves) => MovesText.text = moves.ToString();
+        _game.Player.ScoreChanged += (sender, score) => ScoreText.text = score.ToString();
+
+         _game.Start(InputService, OutputService);
+    }
+
+    private Game _game;
 }

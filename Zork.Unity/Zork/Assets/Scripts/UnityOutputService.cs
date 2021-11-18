@@ -1,33 +1,71 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 using Zork;
 using Zork.Common;
 
 public class UnityOutputService : MonoBehaviour, IOutputService
 {
-    public void Clear()
+    [SerializeField]
+    private int MaxEntries = 60;
+
+    [SerializeField]
+    private Transform OutputTextContainr;
+
+    [SerializeField]
+    private TextMeshProUGUI TextLinePrefab;
+
+    [SerializeField]
+    private Image NewLinePrefab;
+
+    public UnityOutputService() => mEntries = new List<GameObject>();
+    public void Clear() => mEntries.ForEach(entry => Destroy(entry));
+    public void Write(string value) => ParseAndWriteLine(value);
+
+    public void WriteLine(string value) => ParseAndWriteLine(value);
+
+    private void ParseAndWriteLine(string value)
     {
-        throw new System.NotImplementedException();
+        string[] delimiters = { "\n" };
+
+        var lines = value.Split(delimiters, StringSplitOptions.None);
+        foreach (var line in lines)
+        {
+            if (mEntries.Count >= MaxEntries)
+            {
+                var entry = mEntries.First();
+                Destroy(entry);
+                mEntries.Remove(entry);
+            }
+
+            if(string.IsNullOrWhiteSpace(line))
+            {
+                WriteNewLine();
+            }
+            else
+            {
+                WriteTextLine(line);
+            }
+        }
     }
 
-    public void Write(object value)
+    private void WriteNewLine()
     {
-        throw new System.NotImplementedException();
+        var newLine = GameObject.Instantiate(NewLinePrefab);
+        newLine.transform.SetParent(OutputTextContainr, false);
+        mEntries.Add(newLine.gameObject);
     }
 
-    public void WriteLine(object value)
+    private void WriteTextLine(string value)
     {
-        throw new System.NotImplementedException();
+        var textLine = GameObject.Instantiate(TextLinePrefab);
+        textLine.transform.SetParent(OutputTextContainr, false);
+        textLine.text = value;
+        mEntries.Add(textLine.gameObject);
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    private readonly List<GameObject> mEntries;
 }

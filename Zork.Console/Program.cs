@@ -14,20 +14,26 @@ namespace Zork
 
             Game game = JsonConvert.DeserializeObject<Game>(File.ReadAllText(gameFilename));
 
-            ConsoleOutputService output = new ConsoleOutputService();
             ConsoleInputService input = new ConsoleInputService();
+            ConsoleOutputService output = new ConsoleOutputService();
 
-            Game.StartFromFile(gameFilename, output, input);
+            output.WriteLine(string.IsNullOrWhiteSpace(game.WelcomeMessage) ? "Welcome to Zork!" : game.WelcomeMessage);
+            game.Start(input, output);
 
+            Room previousRoom = null;
             while (game.IsRunning)
             {
                 output.WriteLine(game.Player.Location);
+                if (previousRoom!= game.Player.Location)
+                {
+                    Game.Look(game);
+                    previousRoom = game.Player.Location;
+                }
                 output.Write("\n> ");
-                input.GetInput();
+                input.ProcessInput();
             }
 
             output.WriteLine("Thank you for playing!");
-            
         }
 
         private enum CommandLineArguments

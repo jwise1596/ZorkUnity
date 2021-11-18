@@ -7,9 +7,9 @@ namespace Zork
     {
         public event EventHandler<string> InputReceived;
 
-        public void GetInput()
+        public void ProcessInput()
         {
-            string inputString = Console.ReadLine();
+            string inputString = Console.ReadLine().Trim().ToUpper();
             if (string.IsNullOrWhiteSpace(inputString) == false)
             {
                 InputReceived?.Invoke(this, inputString);

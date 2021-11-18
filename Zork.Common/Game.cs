@@ -11,8 +11,6 @@ namespace Zork
 {
     public class Game : INotifyPropertyChanged
     {
-        private string commandString;
-
         public event PropertyChangedEventHandler PropertyChanged;
 
         public World World { get; private set; }
@@ -24,16 +22,16 @@ namespace Zork
         public string ExitMessage { get; set; }
 
         [JsonIgnore]
-        public IOutputService Output { get; set; }
-        [JsonIgnore]
-        public IInputService Input { get; set; }
-
-        [JsonIgnore]
         public Player Player { get; private set; }
 
         [JsonIgnore]
         public bool IsRunning { get; private set; }
 
+        public IInputService Input { get; set; }
+
+        public IOutputService Output { get; set; }
+
+        [JsonIgnore]
         private bool IsRestarting { get; set; }
 
         [JsonIgnore]
@@ -55,66 +53,56 @@ namespace Zork
             };
         }
 
-        public static void StartFromFile(string gameFilename, IOutputService output, IInputService input)
+        public void Start(IInputService input, IOutputService output)
         {
-            if (!File.Exists(gameFilename))
-            {
-                throw new FileNotFoundException("Expected File.", gameFilename);
-            }
+            Assert.IsNotNull(input);
+            Input = input;
+            Input.InputReceived += InputReceivedHandler;
 
-            Load(File.ReadAllText(gameFilename), output, input);
+            Assert.IsNotNull(output);
+            Output = output;
+
+            IsRunning = true;
         }
 
-        public static Game Load(string gamejsonString, IOutputService output, IInputService input)
-        {
-           Game game = JsonConvert.DeserializeObject<Game>(gamejsonString);
-           game.Player = game.World.SpawnPlayer();
-           game.Output = output;
-           game.Input = input;
-           game.IsRunning = true;
-           game.Input.InputReceived += game.InputReceivedHandler;
+        //public static void StartFromFile(string gameFilename, IOutputService output, IInputService input)
+        //{
+        //    if (!File.Exists(gameFilename))
+        //    {
+        //        throw new FileNotFoundException("Expected File.", gameFilename);
+        //    }
 
-           return game;
-         }
+        //    Load(File.ReadAllText(gameFilename), output, input);
+        //}
 
-        private void InputReceivedHandler(object sender, string inputString)
+        //public static Game Load(string filename)
+        //{
+        //   Game game = JsonConvert.DeserializeObject<Game>(File.ReadAllText(filename));
+        //   game.Player = game.World.SpawnPlayer();
+
+        //   return game;
+        // }
+
+        private void InputReceivedHandler(object sender, string commandString)
         {
+            Command foundCommand = null;
+            foreach (Command command in Commands.Values)
             {
-                Output.WriteLine(string.IsNullOrWhiteSpace(WelcomeMessage) ? "Welcome to Zork!" : WelcomeMessage);
+                if (command.Verbs.Contains(commandString))
+                {
+                    foundCommand = command;
+                    break;
+                }
+            }
 
-                //Output = output;
-                Assert.IsNotNull(Output);
-
-                //Input = input;
-                Assert.IsNotNull(Input);
-
-                Output.WriteLine(WelcomeMessage);
-
-                Command foundCommand = null;
-                Room previousRoom = Player.Location;
-
-                foreach (Command command in Commands.Values)
-                    {
-                        if (command.Verbs.Contains(commandString))
-                        {
-                            foundCommand = command;
-                            break;
-                        }
-
-                        if (previousRoom != Player.Location)
-                        {
-                            Look(this);
-                        }
-                    }
-
-                if (foundCommand != null)
-                    {
-                        foundCommand.Action(this);
-                    }
-                    else
-                    {
-                        Output.WriteLine("Unknown command.");
-                    }
+            if (foundCommand != null)
+            {
+                foundCommand.Action(this);
+                Player.Moves++;
+            }
+            else
+            {
+                Output.WriteLine("Unknown command.");
             }
         }
 
@@ -125,23 +113,19 @@ namespace Zork
            Output.Clear();
         }
 
-        private void Look(Game game)
-        {
-            Output.WriteLine(game.Player.Location.Description);
-        }
-        private void Move(Game game, Directions direction)
+        private static void Move(Game game, Directions direction)
         {
 
             if (game.Player.Move(direction) == false)
             {
-                Output.WriteLine("The way is shut!");
+                game.Output.WriteLine("The way is shut!");
             }
         }
 
+        public static void Look(Game game) => game.Output.WriteLine(game.Player.Location.Description);        
         private static void Quit(Game game) => game.IsRunning = false;
 
         [OnDeserialized]
         private void OnDeserialized(StreamingContext context) => Player = new Player(World, StartingLocation);
-
     }
 }
