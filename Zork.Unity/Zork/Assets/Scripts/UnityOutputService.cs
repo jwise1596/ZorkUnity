@@ -24,7 +24,6 @@ public class UnityOutputService : MonoBehaviour, IOutputService
     public UnityOutputService() => mEntries = new List<GameObject>();
     public void Clear() => mEntries.ForEach(entry => Destroy(entry));
     public void Write(string value) => ParseAndWriteLine(value);
-
     public void WriteLine(string value) => ParseAndWriteLine(value);
 
     private void ParseAndWriteLine(string value)

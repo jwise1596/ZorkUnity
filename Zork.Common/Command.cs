@@ -7,7 +7,6 @@ namespace Zork
     public class Command
     {
         public string Name { get; set; }
-        
         public string[] Verbs { get; set; }
 
         public Action<Game> Action { get; set; }

@@ -16,7 +16,8 @@ namespace Zork
         public World World { get; private set; }
 
         public string StartingLocation { get; set; }
-        
+        public string Reward { get; set; }
+
         public string WelcomeMessage { get; set; }
         
         public string ExitMessage { get; set; }
@@ -46,6 +47,7 @@ namespace Zork
             {
                 { "QUIT", new Command("QUIT", new string[] { "QUIT", "Q", "BYE" }, Quit) },
                 { "LOOK", new Command("LOOK", new string[] { "LOOK", "L" }, Look) },
+                //{ "REWARD", new Command("REWARD", new string[] { "REWARD", "R" }, Score) },
                 { "NORTH", new Command("NORTH", new string[] { "NORTH", "N" }, game => Move(game, Directions.North)) },
                 { "SOUTH", new Command("SOUTH", new string[] { "SOUTH", "S" }, game => Move(game, Directions.South)) },
                 { "EAST", new Command("EAST", new string[] { "EAST", "E"}, game => Move(game, Directions.East)) },
@@ -100,6 +102,7 @@ namespace Zork
                 foundCommand.Action(this);
                 Player.Moves++;
             }
+
             else
             {
                 Output.WriteLine("Unknown command.");
@@ -115,10 +118,13 @@ namespace Zork
 
         private static void Move(Game game, Directions direction)
         {
-
             if (game.Player.Move(direction) == false)
             {
                 game.Output.WriteLine("The way is shut!");
+            }
+            else
+            {
+                game.Output.WriteLine(game.Player.Location.Description);
             }
         }
 

@@ -6,9 +6,6 @@ using TMPro;
 public class GameManager : MonoBehaviour
 {
     [SerializeField]
-    private string ZorkGameFileAssetName = "Zork";
-
-    [SerializeField]
     private UnityInputService InputService;
 
     [SerializeField]
@@ -30,8 +27,11 @@ public class GameManager : MonoBehaviour
         _game.Player.LocationChanged += (sender, location) => CurrentLocationText.text = location.ToString();
         _game.Player.MovesChanged += (sender, moves) => MovesText.text = moves.ToString();
         _game.Player.ScoreChanged += (sender, score) => ScoreText.text = score.ToString();
-
-         _game.Start(InputService, OutputService);
+        
+        _game.Start(InputService, OutputService);
+        OutputService.WriteLine(string.IsNullOrWhiteSpace(_game.WelcomeMessage) ? "Welcome to Zork!" : _game.WelcomeMessage);
+        //_game.Commands["LOOK"].Action(_game);
+        _game.Commands["NORTH"].Action(_game);
     }
 
     private Game _game;
