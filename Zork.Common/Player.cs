@@ -8,6 +8,7 @@ namespace Zork
         public event EventHandler<Room> LocationChanged;
         public event EventHandler<int> MovesChanged;
         public event EventHandler<int> ScoreChanged;
+
         public World World { get; }
 
         public string StartingLocation { get; set; }
@@ -74,6 +75,7 @@ namespace Zork
             if (isValidMove)
             {
                 Location = destination;
+                Moves++;
             }
 
             return isValidMove;

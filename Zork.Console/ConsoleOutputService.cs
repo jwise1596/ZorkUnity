@@ -17,9 +17,9 @@ namespace Zork
 
         public void Clear() => Console.Clear();
 
-        internal void WriteLine(Room location)
+        public void WriteLine(Room location)
         {
-            throw new NotImplementedException();
+            Console.WriteLine(location);
         }
     }
 }

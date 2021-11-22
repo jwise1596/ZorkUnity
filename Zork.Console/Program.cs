@@ -23,6 +23,7 @@ namespace Zork
             Room previousRoom = null;
             while (game.IsRunning)
             {
+                game.Output.WriteLine($"In One Turn, Your Score Will Be: {game.Player.Score}");
                 output.WriteLine(game.Player.Location);
                 if (previousRoom!= game.Player.Location)
                 {

@@ -30,8 +30,19 @@ public class GameManager : MonoBehaviour
         
         _game.Start(InputService, OutputService);
         OutputService.WriteLine(string.IsNullOrWhiteSpace(_game.WelcomeMessage) ? "Welcome to Zork!" : _game.WelcomeMessage);
-        //_game.Commands["LOOK"].Action(_game);
-        _game.Commands["NORTH"].Action(_game);
+        _game.Commands["LOOK"].Action(_game);
+    }
+
+    private void Update()
+    {
+        if (_game.IsRunning == false)
+        {
+#if            UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#else
+            Application.Quit();
+#endif 
+        }
     }
 
     private Game _game;

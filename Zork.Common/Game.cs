@@ -16,7 +16,6 @@ namespace Zork
         public World World { get; private set; }
 
         public string StartingLocation { get; set; }
-        public string Reward { get; set; }
 
         public string WelcomeMessage { get; set; }
         
@@ -47,7 +46,7 @@ namespace Zork
             {
                 { "QUIT", new Command("QUIT", new string[] { "QUIT", "Q", "BYE" }, Quit) },
                 { "LOOK", new Command("LOOK", new string[] { "LOOK", "L" }, Look) },
-                //{ "REWARD", new Command("REWARD", new string[] { "REWARD", "R" }, Score) },
+                { "REWARD", new Command("REWARD", new string[] { "REWARD", "R" }, Reward) },
                 { "NORTH", new Command("NORTH", new string[] { "NORTH", "N" }, game => Move(game, Directions.North)) },
                 { "SOUTH", new Command("SOUTH", new string[] { "SOUTH", "S" }, game => Move(game, Directions.South)) },
                 { "EAST", new Command("EAST", new string[] { "EAST", "E"}, game => Move(game, Directions.East)) },
@@ -67,24 +66,6 @@ namespace Zork
             IsRunning = true;
         }
 
-        //public static void StartFromFile(string gameFilename, IOutputService output, IInputService input)
-        //{
-        //    if (!File.Exists(gameFilename))
-        //    {
-        //        throw new FileNotFoundException("Expected File.", gameFilename);
-        //    }
-
-        //    Load(File.ReadAllText(gameFilename), output, input);
-        //}
-
-        //public static Game Load(string filename)
-        //{
-        //   Game game = JsonConvert.DeserializeObject<Game>(File.ReadAllText(filename));
-        //   game.Player = game.World.SpawnPlayer();
-
-        //   return game;
-        // }
-
         private void InputReceivedHandler(object sender, string commandString)
         {
             Command foundCommand = null;
@@ -100,7 +81,7 @@ namespace Zork
             if (foundCommand != null)
             {
                 foundCommand.Action(this);
-                Player.Moves++;
+                
             }
 
             else
@@ -130,6 +111,8 @@ namespace Zork
 
         public static void Look(Game game) => game.Output.WriteLine(game.Player.Location.Description);        
         private static void Quit(Game game) => game.IsRunning = false;
+        public static void Reward(Game game) => game.Player.Score = game.Player.Score + 5;
+        public static void Score(Game game) => game.Output.WriteLine($"In One Turn, Your Score Will Be: {game.Player.Score}");
 
         [OnDeserialized]
         private void OnDeserialized(StreamingContext context) => Player = new Player(World, StartingLocation);
